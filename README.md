@@ -7,7 +7,6 @@ HBNB is a complete web application, integrating database storage, HTML/CSS templ
 
 This team project is part of the ALX School Software Engineering program. </br>
 It represents the first step towards building a full web application: the AirBnB clone.</br>
-Although i did it myself just t have the repo in my github for saving purposes
 
 
 This first step consists of:
@@ -15,7 +14,7 @@ This first step consists of:
 - and the base classes for the storage of this data.
 
 
-## Usage ���
+## Usage
 
 The console works both in interactive mode and non-interactive mode, much like a Unix shell.
 It prints a prompt **(hbnb)** and waits for the user for input.
