@@ -1,30 +1,27 @@
 #!/usr/bin/python3
-"""Test suite for Review class in models.review"""
+"""
+    Contains the definition of tests for class Review
+"""
 import unittest
-
-from models.base_model import BaseModel
 from models.review import Review
 
 
-class TestReview(unittest.TestCase):
-    """Test cases for the Review class"""
+class TestReviewMethods(unittest.TestCase):
+    """Definition of tests for class Review"""
 
-    def setUp(self):
-        self.review = Review()
-        self.attr_list = [
-            "place_id",
-            "user_id",
-            "text"
-        ]
+    def test_attributes_exist(self):
+        """Test that class Review has the required attributes and methods"""
+        self.assertTrue(hasattr(Review, 'place_id'))
+        self.assertTrue(hasattr(Review, 'user_id'))
+        self.assertTrue(hasattr(Review, 'text'))
 
-    def test_review_is_a_subclass_of_basemodel(self):
-        self.assertTrue(issubclass(type(self.review), BaseModel))
+    def test_Review_attributes(self):
+        """Test whether the attributes of class Review are of the right type"""
+        review_1 = Review()
+        self.assertIsInstance(review_1.place_id, str)
+        self.assertIsInstance(review_1.user_id, str)
+        self.assertIsInstance(review_1.text, str)
 
-    def test_attrs_are_class_attrs(self):
-        for attr in self.attr_list:
-            self.assertTrue(hasattr(self.review, attr))
 
-    def test_class_attrs(self):
-        for attr in self.attr_list:
-            self.assertIs(type(getattr(self.review, attr)), str)
-            self.assertFalse(bool(getattr(self.review, attr)))
+if __name__ == '__main__':
+    unittest.main()

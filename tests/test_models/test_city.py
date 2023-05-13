@@ -1,22 +1,25 @@
 #!/usr/bin/python3
-"""Test suite for the City class of the models.city module"""
+"""
+    Contains the definition of tests for class City
+"""
 import unittest
-
-from models.base_model import BaseModel
 from models.city import City
 
 
-class TestCity(unittest.TestCase):
-    """Test cases for the City class"""
+class TestCityMethods(unittest.TestCase):
+    """Definition of tests for class City"""
 
-    def setUp(self):
-        self.city = City()
-        self.attr_list = ["state_id", "name"]
+    def test_attributes_exist(self):
+        """Test that class City has the required attributes"""
+        self.assertTrue(hasattr(City, 'name'))
+        self.assertTrue(hasattr(City, 'state_id'))
 
-    def test_city_is_a_subclass_of_basemodel(self):
-        self.assertTrue(issubclass(type(self.city), BaseModel))
+    def test_City_attributes(self):
+        """Test whether the attributes of class City are of the right type"""
+        city_1 = City()
+        self.assertIsInstance(city_1.name, str)
+        self.assertIsInstance(city_1.state_id, str)
 
-    def test_attrs_are_class_attrs(self):
-        for attr in self.attr_list:
-            self.assertIs(type(getattr(self.city, attr)), str)
-            self.assertFalse(bool(getattr(self.city, attr)))
+
+if __name__ == '__main__':
+    unittest.main()

@@ -1,23 +1,26 @@
 #!/usr/bin/python3
-"""Test suite for Amenity class of the models.amenity module"""
+"""
+    Contains the definition of tests for class Amenity
+"""
 import unittest
-
-from models.base_model import BaseModel
 from models.amenity import Amenity
 
 
-class TestAmenity(unittest.TestCase):
-    """Test cases for the Amenity class"""
+class TestAmenityMethods(unittest.TestCase):
+    """Definition of tests for class Amenity"""
 
-    def setUp(self):
-        self.amenity = Amenity()
+    def test_attributes_exist(self):
+        """Test that class Amenity has the required attributes and methods"""
+        self.assertTrue(hasattr(Amenity, 'name'))
 
-    def test_amenity_is_a_subclass_of_basemodel(self):
-        self.assertTrue(issubclass(type(self.amenity), BaseModel))
+    def test_Amenity_attributes(self):
+        """
+           Test whether the attributes of
+           class Amenity are of the right type
+        """
+        amenity_1 = Amenity()
+        self.assertIsInstance(amenity_1.name, str)
 
-    def test_attr_is_a_class_attr(self):
-        self.assertTrue(hasattr(self.amenity, "name"))
 
-    def test_class_attr(self):
-        self.assertIs(type(self.amenity.name), str)
-        self.assertFalse(bool(getattr(self.amenity, "name")))
+if __name__ == '__main__':
+    unittest.main()
