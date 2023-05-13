@@ -1,95 +1,54 @@
 #!/usr/bin/python3
-
-"""Defines the FileStorage class."""
+"""module with the class FileStorage"""
 
 import json
-
-from models.base_model import BaseModel
-
-from models.user import User
-
-from models.state import State
-
-from models.city import City
-
-from models.place import Place
-
-from models.amenity import Amenity
-
-from models.review import Review
-
-
-
+import os
 
 
 class FileStorage:
-
-    """Represent an abstracted storage engine.
-
-    Attributes:
-
-        __file_path (str): The name of the file to save objects to.
-
-        __objects (dict): A dictionary of instantiated objects.
-
+    """serializes instances to a JSON file and\
+            deserializes JSON file to instances
     """
-
     __file_path = "file.json"
-
     __objects = {}
 
-
-
     def all(self):
-
-        """Return the dictionary __objects."""
-
+        """returns the dictionary __objects"""
         return FileStorage.__objects
 
-
-
     def new(self, obj):
-
-        """Set in __objects obj with key <obj_class_name>.id"""
-
-        ocname = obj.__class__.__name__
-
-        FileStorage.__objects["{}.{}".format(ocname, obj.id)] = obj
-
-
+        """sets in __objects the obj with key <obj class name>.id"""
+        cl_name = obj.__class__.__name__
+        base_id = obj.id
+        dic_key = "{}.{}".format(cl_name, base_id)
+        FileStorage.__objects[dic_key] = obj
 
     def save(self):
+        """serializes __objects to the JSON file(path: __file_path)"""
+        dic = {}
+        for k, v in FileStorage.__objects.items():
+            dic[k] = v.to_dict()
 
-        """Serialize __objects to the JSON file __file_path."""
-
-        odict = FileStorage.__objects
-
-        objdict = {obj: odict[obj].to_dict() for obj in odict.keys()}
-
-        with open(FileStorage.__file_path, "w") as f:
-
-            json.dump(objdict, f)
-
-
+        to_json = json.dumps(dic)
+        with open(FileStorage.__file_path, mode="w", encoding="utf-8") as f:
+            f.write(to_json)
 
     def reload(self):
+        """deserializes the JSON file to __objects\
+                (only if the JSON file(__file_path) exists
+        """
+        from models.base_model import BaseModel
+        from models.user import User
+        from models.place import Place
+        from models.state import State
+        from models.amenity import Amenity
+        from models.review import Review
 
-        """Deserialize the JSON file __file_path to __objects, if it exists."""
-
-        try:
-
-            with open(FileStorage.__file_path) as f:
-
-                objdict = json.load(f)
-
-                for o in objdict.values():
-
-                    cls_name = o["__class__"]
-
-                    del o["__class__"]
-
-                    self.new(eval(cls_name)(**o))
-
-        except FileNotFoundError:
-
-            return
+        cls_dic = {'BaseModel': BaseModel, 'User': User, 'Place': Place,
+                   'State': State, 'Amenity': Amenity, 'Review': Review}
+        if os.path.exists(FileStorage.__file_path):
+            with open(FileStorage.__file_path, 'r') as f:
+                from_json = json.load(f)
+                for k, v in from_json.items():
+                    cls_name = v['__class__']
+                    self.new(cls_dic[cls_name](**v))
